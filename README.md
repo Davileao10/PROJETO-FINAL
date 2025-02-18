@@ -1,5 +1,10 @@
 # Controle de Joystick com RP2040 e Display SSD1306
 
+- **Código-fonte** (pwm_irq.c).
+- **Vídeo de demonstração**:
+   - [https://drive.google.com/file/d/1jQv01XCyHK3hzGYLnKJrzjA0B7Lp9td0/view?usp=drivesdk ]
+
+
 Este projeto implementa um sistema de controle baseado em joystick utilizando o microcontrolador RP2040 na placa BitDogLab. Ele envolve a leitura de valores analógicos via ADC, controle de LEDs via PWM e exibição de um quadrado móvel no display OLED SSD1306, seguindo os requisitos da atividade prática.
 
 ## 📌 Funcionalidades Implementadas
@@ -52,14 +57,5 @@ Este projeto implementa um sistema de controle baseado em joystick utilizando o 
 3. **Executar o código**:
    - Conecte o RP2040 e observe o funcionamento do joystick, LEDs e display.
 
-## 📽️ Entrega da Atividade
-
-Para a entrega, é necessário:
-1. **Código-fonte** (pwm_irq.c).
-2. **Vídeo de demonstração**:
-   - Apresentação pessoal.
-   - Explicação das funcionalidades.
-   - Demonstração do funcionamento na placa BitDogLab.
-   - Link do vídeo no YouTube ou Google Drive.
 
 
