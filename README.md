@@ -1,58 +1,65 @@
-# Controle de LEDs e Display com Joystick no Raspberry Pi Pico W
+# Controle de Joystick com RP2040 e Display SSD1306
 
-## Descrição do Projeto
-Este projeto utiliza um **Raspberry Pi Pico W** e a placa **BitDogLab** para controlar um **LED RGB** e um **display OLED SSD1306** via joystick. O joystick fornece valores analógicos que são utilizados para ajustar a intensidade dos LEDs e movimentar um quadrado no display.
+Este projeto implementa um sistema de controle baseado em joystick utilizando o microcontrolador RP2040 na placa BitDogLab. Ele envolve a leitura de valores analógicos via ADC, controle de LEDs via PWM e exibição de um quadrado móvel no display OLED SSD1306, seguindo os requisitos da atividade prática.
 
-## Vídeo de demonstração
+## 📌 Funcionalidades Implementadas
+
+- **Leitura do joystick (ADC)**: Captação dos valores dos eixos X e Y para controle dos LEDs e do display.
+- **Controle de LEDs RGB (PWM)**:
+  - LED Azul: Brilho controlado pelo eixo Y.
+  - LED Vermelho: Brilho controlado pelo eixo X.
+- **Movimentação do quadrado no display OLED**:
+  - O quadrado de 8x8 pixels se move proporcionalmente aos valores do joystick.
+- **Alteração do estilo da borda do display**:
+  - Sem borda → Borda fina → Borda grossa (alternado pelo botão do joystick).
+- **Alternância do LED verde**: Cada vez que o botão do joystick é pressionado, o LED verde liga/desliga.
+- **Ativação/Desativação dos LEDs PWM**: O botão A liga ou desliga a variação dos LEDs RGB.
+- **Uso de interrupções (IRQ)**: Implementado para os botões do joystick e botão A.
+
+## 🛠️ Componentes Utilizados
+
+- **RP2040 (Placa BitDogLab)**
+- **Joystick** (conectado aos GPIOs 26 e 27)
+- **Botão do Joystick** (GPIO 22)
+- **Botão A** (GPIO 5)
+- **LED RGB** (GPIOs 11, 12 e 13)
+- **Display SSD1306** (comunicação via I2C: SDA no GPIO 14, SCL no GPIO 15)
+
+## 📜 Requisitos Atendidos
+✅ Leitura do joystick via ADC.  
+✅ Controle de LEDs RGB via PWM.  
+✅ Exibição gráfica no display via I2C.  
+✅ Uso de interrupções para os botões.  
+✅ Alternância de estilos de borda no display.  
+✅ Alternância do estado do LED verde pelo botão do joystick.  
+✅ Ativação/desativação dos LEDs PWM pelo botão A.  
+
+## 🔧 Como Rodar o Projeto
+
+1. **Configurar o ambiente de desenvolvimento**:
+   - Instale o **SDK do Raspberry Pi Pico**.
+   - Configure o **CMake** e o **compilador arm-none-eabi-gcc**.
+
+2. **Compilar e carregar o código**:
+   ```sh
+   mkdir build
+   cd build
+   cmake ..
+   make
+   ```
+   - Copie o arquivo `.uf2` gerado para o Pico (modo bootloader).
+
+3. **Executar o código**:
+   - Conecte o RP2040 e observe o funcionamento do joystick, LEDs e display.
+
+## 📽️ Entrega da Atividade
+
+Para a entrega, é necessário:
+1. **Código-fonte** (pwm_irq.c).
+2. **Vídeo de demonstração**:
+   - Apresentação pessoal.
+   - Explicação das funcionalidades.
+   - Demonstração do funcionamento na placa BitDogLab.
+   - Link do vídeo no YouTube ou Google Drive.
 
 
-## Objetivos
-- Compreender o funcionamento do conversor Analógico-Digital (ADC) no RP2040.
-- Utilizar **PWM** para controlar a intensidade luminosa de dois LEDs RGB com base nos valores do joystick.
-- Representar a posição do joystick no display **SSD1306** através de um quadrado móvel.
-- Aplicar o protocolo de comunicação **I2C** para interação com o display.
-- Implementar interrupções para lidar com eventos de botão.
-
-## Funcionalidades
-### Controle dos LEDs RGB
-- **LED Azul (GPIO 12)**: Brilho ajustado com base no eixo **Y** do joystick.
-  - Posição central (2048): LED apagado.
-  - Movimento para cima ou para baixo aumenta a intensidade até o máximo (0 ou 4095).
-- **LED Vermelho (GPIO 13)**: Brilho ajustado com base no eixo **X** do joystick.
-  - Posição central (2048): LED apagado.
-  - Movimento para esquerda ou direita aumenta a intensidade até o máximo (0 ou 4095).
-
-### Movimentação no Display SSD1306 (128x64)
-- Um **quadrado de 8x8 pixels** se move proporcionalmente aos valores do joystick.
-- A posição do quadrado é atualizada conforme os eixos X e Y do joystick.
-
-### Controle via Botões
-- **Botão do Joystick (GPIO 22)**:
-  - Alterna o estado do **LED Verde (GPIO 11)** a cada acionamento.
-  - Altera o estilo da borda do display para indicar o acionamento.
-- **Botão A (GPIO 5)**:
-  - Ativa ou desativa os LEDs controlados por PWM.
-
-## Componentes Utilizados
-- **Raspberry Pi Pico W**;
-- **Placa BitDogLab**;
-- **Joystick (GPIO 26 e 27 para X/Y, GPIO 22 para botão)**;
-- **Display OLED SSD1306 (I2C - GPIO 14 e 15)**;
-- **LED RGB (GPIO 11, 12 e 13)**;
-- **Botão A (GPIO 5)**.
-
-## Requisitos do Projeto
-1. **Uso de Interrupções:** Todas as funcionalidades dos botões devem ser implementadas com **IRQ**;
-2. **Debouncing:** Tratamento de bouncing via software;
-3. **Display 128x64:** Utilização de gráficos para exibição dos dados;
-4. **Organização do Código:** Estrutura bem definida e comentada para melhor compreensão.
-
-## Como Executar
-1. Clone este repositório e compile o código para o Raspberry Pi Pico W;
-2. Conecte os componentes conforme o esquema de conexão;
-3. Faça o upload do código e execute o programa;
-4. Utilize o joystick para controlar os LEDs e o quadrado no display.
-
-## Como Simular
-1. Clone este repositório e compile o código;
-2. Abra o **diagram.json** e execute a simulação no Wokwi do VS Code.
