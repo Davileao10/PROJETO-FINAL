@@ -1,61 +1,69 @@
-# Controle de Joystick com RP2040 e Display SSD1306
+# Alarme Interativo com Contagem Regressiva na BitDogLab
 
-- **Código-fonte** (pwm_irq.c).
-- **Vídeo de demonstração**:
-   - [https://drive.google.com/file/d/1jQv01XCyHK3hzGYLnKJrzjA0B7Lp9td0/view?usp=drivesdk ]
+## Descrição do Projeto
+Este projeto apresenta um sistema embarcado inovador na forma de um alarme interativo, desenvolvido para a placa BitDogLab, utilizando um microcontrolador RP2040. O sistema combina um display OLED, botões, buzzers e uma matriz de LEDs RGB 5x5 para oferecer uma experiência visual e sonora dinâmica.
 
+## Links
+- **Repositório:** [PROJETO-FINAL](https://github.com/Davileao10/PROJETO-FINAL)
+- **Vídeo de Demonstração:** (adicione o link aqui)
 
-Este projeto implementa um sistema de controle baseado em joystick utilizando o microcontrolador RP2040 na placa BitDogLab. Ele envolve a leitura de valores analógicos via ADC, controle de LEDs via PWM e exibição de um quadrado móvel no display OLED SSD1306, seguindo os requisitos da atividade prática.
+## Objetivos
+- Desenvolver um alarme funcional com contagem regressiva configurável.
+- Fornecer feedback visual e sonoro através de LEDs RGB e buzzers.
+- Interatividade via display SSD1306 e botões físicos.
 
-## 📌 Funcionalidades Implementadas
+## Funcionamento
+- Configuração do tempo (incremento/decremento de 30 segundos) usando os botões GP5 (A) e GP6 (B).
+- Início da contagem regressiva pelo botão joystick (GP22).
+- Nos últimos 5 segundos, a matriz de LEDs exibe uma contagem colorida e o buzzer emite sons variados.
+- Ao atingir 0 segundos, todos os LEDs acendem em vermelho e os buzzers soam por 5 segundos.
 
-- **Leitura do joystick (ADC)**: Captação dos valores dos eixos X e Y para controle dos LEDs e do display.
-- **Controle de LEDs RGB (PWM)**:
-  - LED Azul: Brilho controlado pelo eixo Y.
-  - LED Vermelho: Brilho controlado pelo eixo X.
-- **Movimentação do quadrado no display OLED**:
-  - O quadrado de 8x8 pixels se move proporcionalmente aos valores do joystick.
-- **Alteração do estilo da borda do display**:
-  - Sem borda → Borda fina → Borda grossa (alternado pelo botão do joystick).
-- **Alternância do LED verde**: Cada vez que o botão do joystick é pressionado, o LED verde liga/desliga.
-- **Ativação/Desativação dos LEDs PWM**: O botão A liga ou desliga a variação dos LEDs RGB.
-- **Uso de interrupções (IRQ)**: Implementado para os botões do joystick e botão A.
+## Hardware Utilizado
+- **Placa:** BitDogLab com microcontrolador RP2040
+- **Display:** SSD1306 OLED (I2C)
+- **Matriz de LEDs:** 5x5 RGB (WS2812)
+- **Buzzers:** Dois buzzers controlados por PWM
+- **Botões:** GP5, GP6 e GP22
 
-## 🛠️ Componentes Utilizados
+## Pinagem
+- **GP5:** Botão A (entrada, pull-up)
+- **GP6:** Botão B (entrada, pull-up)
+- **GP22:** Botão Joystick (entrada, pull-up)
+- **GP14:** SDA (I2C para display)
+- **GP15:** SCL (I2C para display)
+- **GP10:** Buzzer-B (PWM)
+- **GP21:** Buzzer-A (PWM)
+- **GP7:** Matriz 5x5 RGB (WS2812)
 
-- **RP2040 (Placa BitDogLab)**
-- **Joystick** (conectado aos GPIOs 26 e 27)
-- **Botão do Joystick** (GPIO 22)
-- **Botão A** (GPIO 5)
-- **LED RGB** (GPIOs 11, 12 e 13)
-- **Display SSD1306** (comunicação via I2C: SDA no GPIO 14, SCL no GPIO 15)
+## Software
+- **Linguagem:** C
+- **SDK:** Pico SDK 2.1.1
+- **IDE:** Visual Studio Code
+- **Compilador:** arm-none-eabi-gcc
 
-## 📜 Requisitos Atendidos
-✅ Leitura do joystick via ADC.  
-✅ Controle de LEDs RGB via PWM.  
-✅ Exibição gráfica no display via I2C.  
-✅ Uso de interrupções para os botões.  
-✅ Alternância de estilos de borda no display.  
-✅ Alternância do estado do LED verde pelo botão do joystick.  
-✅ Ativação/desativação dos LEDs PWM pelo botão A.  
+## Como Executar
+1. Clone o repositório:
+    ```bash
+    git clone https://github.com/Davileao10/PROJETO-FINAL.git
+    ```
+2. Configure o ambiente Pico SDK.
+3. Compile o projeto:
+    ```bash
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ```
+4. Carregue o firmware:
+    - Conecte o Raspberry Pi Pico W enquanto pressiona o botão BOOTSEL.
+    - Copie o arquivo `.uf2` gerado para o dispositivo.
+5. O Pico reiniciará automaticamente com o firmware.
 
-## 🔧 Como Rodar o Projeto
+## Resultados Esperados
+- Contagem regressiva visual e sonora.
+- Feedback sincronizado entre display, matriz de LEDs e buzzers.
 
-1. **Configurar o ambiente de desenvolvimento**:
-   - Instale o **SDK do Raspberry Pi Pico**.
-   - Configure o **CMake** e o **compilador arm-none-eabi-gcc**.
-
-2. **Compilar e carregar o código**:
-   ```sh
-   mkdir build
-   cd build
-   cmake ..
-   make
-   ```
-   - Copie o arquivo `.uf2` gerado para o Pico (modo bootloader).
-
-3. **Executar o código**:
-   - Conecte o RP2040 e observe o funcionamento do joystick, LEDs e display.
-
-
+## Referências
+- [Pico SDK Documentation](https://pico-sdk.readthedocs.io)
+- [Pico Examples](https://github.com/raspberrypi/pico-examples)
 
