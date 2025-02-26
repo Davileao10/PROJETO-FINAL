@@ -1,49 +1,54 @@
-#include <stdlib.h>
-#include "pico/stdlib.h"
-#include "hardware/i2c.h"
+/**
+ * Copyright (c) 2021 Raspberry Pi (Trading) Ltd.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
 
-#define WIDTH 128
-#define HEIGHT 64
-
-typedef enum {
-  SET_CONTRAST = 0x81,
-  SET_ENTIRE_ON = 0xA4,
-  SET_NORM_INV = 0xA6,
-  SET_DISP = 0xAE,
-  SET_MEM_ADDR = 0x20,
-  SET_COL_ADDR = 0x21,
-  SET_PAGE_ADDR = 0x22,
-  SET_DISP_START_LINE = 0x40,
-  SET_SEG_REMAP = 0xA0,
-  SET_MUX_RATIO = 0xA8,
-  SET_COM_OUT_DIR = 0xC0,
-  SET_DISP_OFFSET = 0xD3,
-  SET_COM_PIN_CFG = 0xDA,
-  SET_DISP_CLK_DIV = 0xD5,
-  SET_PRECHARGE = 0xD9,
-  SET_VCOM_DESEL = 0xDB,
-  SET_CHARGE_PUMP = 0x8D
-} ssd1306_command_t;
-
-typedef struct {
-  uint8_t width, height, pages, address;
-  i2c_inst_t *i2c_port;
-  bool external_vcc;
-  uint8_t *ram_buffer;
-  size_t bufsize;
-  uint8_t port_buffer[2];
-} ssd1306_t;
-
-void ssd1306_init(ssd1306_t *ssd, uint8_t width, uint8_t height, bool external_vcc, uint8_t address, i2c_inst_t *i2c);
-void ssd1306_config(ssd1306_t *ssd);
-void ssd1306_command(ssd1306_t *ssd, uint8_t command);
-void ssd1306_send_data(ssd1306_t *ssd);
-
-void ssd1306_pixel(ssd1306_t *ssd, uint8_t x, uint8_t y, bool value);
-void ssd1306_fill(ssd1306_t *ssd, bool value);
-void ssd1306_rect(ssd1306_t *ssd, uint8_t top, uint8_t left, uint8_t width, uint8_t height, bool value, bool fill);
-void ssd1306_line(ssd1306_t *ssd, uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, bool value);
-void ssd1306_hline(ssd1306_t *ssd, uint8_t x0, uint8_t x1, uint8_t y, bool value);
-void ssd1306_vline(ssd1306_t *ssd, uint8_t x, uint8_t y0, uint8_t y1, bool value);
-void ssd1306_draw_char(ssd1306_t *ssd, char c, uint8_t x, uint8_t y);
-void ssd1306_draw_string(ssd1306_t *ssd, const char *str, uint8_t x, uint8_t y);
+ #ifndef _SSD1306_H
+ #define _SSD1306_H
+ 
+ #include "hardware/i2c.h"
+ 
+ // Estrutura para controlar o display SSD1306
+ typedef struct {
+     uint8_t width;       // Largura do display em pixels
+     uint8_t height;      // Altura do display em pixels
+     uint8_t pages;       // Pages = height / 8
+     uint8_t address;     // Endereço I2C do dispositivo
+     bool external_vcc;   // Se usa fonte de alimentação externa
+     uint8_t *buffer;     // Buffer de dados para o display
+     size_t bufsize;      // Tamanho do buffer
+     i2c_inst_t *i2c_i;   // Instância I2C
+ } ssd1306_t;
+ 
+ // Inicializa o display SSD1306
+ void ssd1306_init(ssd1306_t *disp, uint8_t width, uint8_t height, uint8_t address, i2c_inst_t *i2c_instance);
+ 
+ // Libera a memória usada pelo display
+ void ssd1306_deinit(ssd1306_t *disp);
+ 
+ // Limpa o buffer do display
+ void ssd1306_clear(ssd1306_t *disp);
+ 
+ // Envia os dados do buffer para o display
+ void ssd1306_show(ssd1306_t *disp);
+ 
+ // Desenha um pixel no buffer
+ void ssd1306_draw_pixel(ssd1306_t *disp, uint8_t x, uint8_t y);
+ 
+ // Apaga um pixel no buffer
+ void ssd1306_clear_pixel(ssd1306_t *disp, uint8_t x, uint8_t y);
+ 
+ // Desenha caractere no buffer
+ void ssd1306_draw_char(ssd1306_t *disp, uint8_t x, uint8_t y, uint8_t scale, char c);
+ 
+ // Desenha string no buffer
+ void ssd1306_draw_string(ssd1306_t *disp, uint8_t x, uint8_t y, uint8_t scale, const char *s);
+ 
+ // Configura brilho do display (0-255)
+ void ssd1306_set_contrast(ssd1306_t *disp, uint8_t contrast);
+ 
+ // Inverte as cores do display
+ void ssd1306_invert(ssd1306_t *disp, bool invert);
+ 
+ #endif // _SSD1306_H
