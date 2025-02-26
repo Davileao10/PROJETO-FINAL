@@ -3,9 +3,8 @@
 ## Descrição do Projeto
 Este projeto apresenta um sistema embarcado inovador na forma de um alarme interativo, desenvolvido para a placa BitDogLab, utilizando um microcontrolador RP2040. O sistema combina um display OLED, botões, buzzers e uma matriz de LEDs RGB 5x5 para oferecer uma experiência visual e sonora dinâmica.
 
-## Links
-- **Repositório:** [PROJETO-FINAL](https://github.com/Davileao10/PROJETO-FINAL)
-- **Vídeo de Demonstração:** (adicione o link aqui)
+## Link
+- **Vídeo de Demonstração:** ([https://drive.google.com/file/d/18f-KX2Qx_i7-tpfUvIMdOArqE_WXhsYn/view?usp=drivesdk]
 
 ## Objetivos
 - Desenvolver um alarme funcional com contagem regressiva configurável.
